@@ -67,9 +67,9 @@ class CategoriesDB {
       $this->pdo->exec($query);
     }
 
-  public function create (Category $category, $email_user) {
+  public function create (Category $category) {
     $this->createCategoriesStatement->bindValue(":name_category",$category->getName());
-    $this->createCategoriesStatement->bindValue(":email_user",$email_user);
+    $this->createCategoriesStatement->bindValue(":email_user",$category->getUserEmail());
     $this->createCategoriesStatement->execute();
   }
 

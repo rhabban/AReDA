@@ -178,6 +178,7 @@ switch ($action) {
 
     case "formulaire":
         if($user != null){
+            $categories = $dbHandler->retrieveCategoriesByEmail($user->getEmail());
             if($p===null && substr($_SERVER["QUERY_STRING"], -1) != "&"){
                 $categories = $dbHandler->retrieveCategoriesByEmail($user->getEmail());
                 $items= array();
@@ -216,31 +217,66 @@ switch ($action) {
                         }
                         break;
 
-                    case "save":
-                        $newArtworkId=$_GET["newArtworkId"];
+                    case "saveCreation":
+                        var_dump($_POST);
                         $data = $_POST;
-                        $errors = ArtWorkForms::validateArtworkCreation($data,$ownersDB);
+                        $errors = array(); // A MODIFIER
                         if (count($errors)==0) {
-                            $artwork = ArtWorkForms::createArtwork($data);
-                            $user = $_SESSION['user'];
-                            $ownersDB->create($user, $artwork);
-                            unset($_SESSION["newArtwork"][$newArtworkId]);
-                            unset($_SESSION["newArtworkErrors"][$newArtworkId]);
-                            header("HTTP/1.1 303 See Other");
-                            $artworkDB->create($artwork);
-                            $_SESSION["feedback"] = "<div class='alert alert-info'>L'&oelig;uvre a bien &eacute;t&eacute; ajout&eacute;e</div>";
-                            header("Location: ".htmlspecialchars_decode($urlBuilder->getAllWorksURL()[0]));
+                            foreach ($data as $key => $value) {
+                                if ($key=="name_category") {
+                                    $name_category=$key;
+                                } else {
+                                    split($key)
+                                }
+                            }
+                            //$dbHandler->createCategory($data,$user);
+                            $_SESSION["feedback"] = "<div class='alert alert-info'>L'utilisateur a bien &eacute;t&eacute; ajout&eacute;</div>";
+                            //header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         } else { // count(errors) != 0
-                            $_SESSION["newArtwork"][$newArtworkId] = $data;
-                            $_SESSION["newArtworkErrors"][$newArtworkId] = $errors;
-                            $_SESSION["feedback"] = "<div class='alert alert-danger'>Il y a des erreurs dans le formulaire</div>";
-                            header("HTTP/1.1 303 See Other");
-                            header("Location: ".htmlspecialchars_decode($urlBuilder->getAddArtworkURL($newArtworkId)[0]));
+                            $_SESSION["feedback"] = "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span> Il y a des erreurs dans le formulaire !</div>";
+                            header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
+                        }
+                        break;
+
+                    case "saveEdition":  /*
+                        Script for update record from X-editable.
+                        */
+                        //delay (for debug only)
+                        sleep(1); 
+                        /*
+                        You will get 'pk', 'name' and 'value' in $_POST array.
+                        */
+                        $name = $_POST['name'];
+                        $pk = $_POST['pk'];
+                        $value = $_POST['value'];
+                        /*
+                        Check submitted value
+                        */
+                        if(!empty($value)) {
+                            /*
+                            If value is correct you process it (for example, save to db).
+                            In case of success your script should not return anything, standard HTTP response '200 OK' is enough.
+
+                            for example:
+                            $result = mysql_query('update users set '.mysql_escape_string($name).'="'.mysql_escape_string($value).'" where user_id = "'.mysql_escape_string($pk).'"');
+                            */
+
+                            //here, for debug reason we just return dump of $_POST, you will see result in browser console
+                            echo $value;
+                            $dbHandler->updateItemValue($pk,$value);
+                            die();
+                        } else {
+                        /* 
+                            In case of incorrect value or error you should return HTTP status != 200. 
+                            Response body will be shown as error message in editable form.
+                            */
+                            //header('HTTP 400 Bad Request', true, 400);
+                            echo "This field is required!";
                         }
                         break;
 
                     default:
-                        header("Location: ".htmlspecialchars_decode($urlBuilder->getAllWorksURL()[0]));
+                        $view->makeUserAdministrativeDataPage($categories);
                         break;
                 }
             }

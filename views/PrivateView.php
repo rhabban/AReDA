@@ -33,10 +33,34 @@ abstract class PrivateView extends View {
         $this->content.="<h2>" . $this->title . "</h2>";
         $this->content.="<div id='actions'>";
         $this->content.="<a id='edit' class='btn btn-primary btn-lg' data-toggle='tooltip' title data-original-title='Editer' role='button'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
-        $this->content.="<div id='editionMode'>Edition activé&nbsp;";
-        $this->content.="<a id='cancel' class='btn btn-danger btn-lg' data-toggle='tooltip' title data-original-title='Annuler les opérations' role='button'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>&nbsp;";
-        $this->content.="<a id='save' href='post.php' class='btn btn-success btn-lg' data-toggle='tooltip' title data-original-title='Sauvegarder' role='button'><span class='glyphicon glyphicon-floppy-saved' aria-hidden='true'></span></a>";
+        $this->content.="&nbsp;<a id='addCategory' class='btn btn-success btn-lg' data-toggle='tooltip' title data-original-title='Ajouter une catégorie' role='button'><span class='glyphicon glyphicon-plus' data-toggle='modal' data-target='#modalAddCategory' aria-hidden='true'></span></a>&nbsp;";
         $this->content.="</div>";
+        $this->content.='<div id="modalAddCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <form action="'.$this->urlBuilder->getSaveCategoryCreationURL()[0].'" method="post">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title">Ajouter une catégorie</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <form>
+                                    <div class="form-group">
+                                      <label for="name_category">Nom de la catégorie</label>
+                                      <input type="text" class="form-control" name="name_category" id="name_category" placeholder="Entrer le nom de la catégorie">
+                                    </div>
+                                    <label>Elements de la catégorie</label>
+                                    <ul id="list_item">
+                                      <li><a class="btn btn-success" id="addItem"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add item</a></li>
+                                    </ul>
+                                  </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Enregistrer la nouvelle catégorie</button>
+                                </div>
+                              </form>
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->';
         $this->content.="</div>";
         $this->content.="<div class='row'>";
 
@@ -48,7 +72,7 @@ abstract class PrivateView extends View {
             $this->content.="<tbody>";
             
             foreach($category->getItemsList() as $item){
-                $this->content.="<tr><td>" .$item->getName() ."</td><td><a href='#' class='value_item' data-type='text' data-pk='" . $item->getId() . "' data-url='' >" . $item->getValue() . "</em></td></tr>";
+                $this->content.="<tr><td>" .$item->getName() ."</td><td><a href='#' name='".$item->getName()."'class='value_item' data-type='text' data-pk='" . $item->getId() . "' data-url='" . $this->urlBuilder->getSaveUserAdministrativeDataURL()[0] . "' >" . $item->getValue() . "</em></td></tr>";
             }
 
             $this->content.="</tbody>";

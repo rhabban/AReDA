@@ -10,6 +10,6 @@ div.content{
   min-height: 300px;
   }
 
-#editionMode{
-	float:right;
+ul{
+	list-style-type: none;
 }

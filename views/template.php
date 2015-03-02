@@ -21,26 +21,29 @@
   			if ($(this).hasClass("active") ){
   				$(this).removeClass("active");
   				$(".value_item").editable('disable');
-  				$("#editionMode").hide();
   			} else {
   				$(this).addClass("active");
   				$(".value_item").editable('enable');
-  				$("#editionMode").show();
   			}
   		});
 
+      $("#addItem").click(function(){
+        id_item++;
+        $(this).parent().before("<li class='form-inline'><div class='form-group'><label>Nom de l'élément</label><input type='text' name='name_item_" + id_item +"' class='form-control col-xs-3 name_item' placeholder='Nom de l&apos;élément'></div><div class='form-group'><label>Valeur de l'élément</label><input type='text' name='value_item_" + id_item +"' class='form-control value_item' placeholder='Valeur de l&apos;élément'></div></li>");
+      });
+
   		$("#save").click(function(){
-  			res=$(".value_item").editable('getValue');
-  			foreach(res)
-  		});
+        console.log($('.value_item.editable-unsaved').editable('submit'));
+      });
 
   		$('[data-toggle="tooltip"]').tooltip();
-  		$("#editionMode").hide();
   		$(function(){
-          $('.value_item a').editable({
-             url: 'post.php' 
-          });
-       });
+        $('.value_item a').editable({
+        });
+      });
+
+      var id_item = 0;
+      $.fn.editable.defaults.mode = 'inline';
  	});
   </script>	
   <title>Site web minimal</title>

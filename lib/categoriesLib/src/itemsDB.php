@@ -148,6 +148,12 @@ class ItemsDB {
     $this->updateItemStatement->execute();
   }
 
+  public function updateItemValue ($id_item, $value_item) {
+    $this->updateValueStatement->bindValue(":value_item",$value_item);
+    $this->updateValueStatement->bindValue(":id_item",$id_item);
+    $this->updateValueStatement->execute();
+  }
+
   // Delete methods =======================================================================
 
   /**

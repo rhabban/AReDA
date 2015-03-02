@@ -98,11 +98,28 @@ class URLBuilder {
 
 
      /**
-     * Returns the URL of the works page.
+     * Returns the URL of the user's administrative Data page.
      * @return A string
      */
     public function getUserAdministrativeDataURL ($linkName = "Formulaires") {
         return array(".?action=formulaire", $linkName);
+    }
+
+    /**
+     * Returns the URL of  page.
+     * @return A string
+     */
+    public function getSaveUserAdministrativeDataURL ($linkName = "Formulaires") {
+        return array(".?action=formulaire&amp;p=saveEdition", $linkName);
+    }
+
+    /**
+     * Returns the URL of the page allowing to save an elimination tournament.
+     * @param $newTournamentId The id of the tournament to save
+     * @return an array
+     */
+    public function getSaveCategoryCreationURL ($email="", $linkName = "Sauver") {
+        return array(".?action=formulaire&amp;p=saveCreation", $linkName);
     }
 
     /**

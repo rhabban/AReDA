@@ -65,11 +65,11 @@ class DBHandler {
    * @return The id assigned to this championship in the database
    * @throws PDOException if a database error occurs
    */
-  public function createCategory (Category $category) {
-    $email = $category->getUserEmail();
+  public function createCategory ($name_category, $email_user) {
+    $category= new Category($name_category, $email_user);
     $newId = $this->retrieveLastCategoryId() + 1;
     $category->setId($newId);
-    $this->categoriesDB->create($category,$email);
+    $this->categoriesDB->create($category);
   }
 
   /**
@@ -199,6 +199,10 @@ class DBHandler {
 
   public function updateItem (Item $item) {
     $this->itemsDB->updateItem($item);
+  }
+
+  public function updateItemValue ($id_item, $value_item) {
+    $this->itemsDB->updateItemValue($id_item, $value_item);
   }
 
   public function updateCategory (Category $category) {
