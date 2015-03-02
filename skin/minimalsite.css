@@ -1,0 +1,15 @@
+body{ 
+  padding-top: 60px;
+  text-align: center;
+ }
+
+div.content{ 
+  width: 70%;
+  margin-left: 15%;
+  text-align: justify;
+  min-height: 300px;
+  }
+
+#editionMode{
+	float:right;
+}

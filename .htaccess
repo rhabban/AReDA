@@ -1,0 +1,13 @@
+Options -Indexes
+
+<Files ".htaccess">
+  Order Allow,Deny
+  Deny from all
+</Files>
+
+#RedirectMatch 404 /config
+RedirectMatch 404 /control
+RedirectMatch 404 /fragments
+RedirectMatch 404 /lib
+RedirectMatch 404 /model
+RedirectMatch 404 /views
