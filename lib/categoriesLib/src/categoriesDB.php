@@ -104,7 +104,12 @@ class CategoriesDB {
   public function retrieveLastCategoryId(){
     $query="SELECT MAX(`id_category`) FROM `".$this->table."`";
     $res = $this->pdo->query($query)->fetch(PDO::FETCH_ASSOC);
-    return $res["MAX(`id_category`)"];
+    if($res==null){
+      return 0;
+    }
+    else{
+      return intval($res["MAX(`id_category`)"]);
+    }
   }
 
   // Update methods =======================================================================

@@ -119,7 +119,6 @@ class AdminView extends PrivateView {
         foreach ($this->getAdminUserMenu() as $link) {
             $slug = $link[1];
             $link = $link[0];
-            
             if($link == $url){
                 $adminUser.= "<li class='active'><a href=\"".$link."\">".$slug."</a></li>";
             } else if($link == '.' && $_SERVER["QUERY_STRING"] == ''){

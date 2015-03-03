@@ -68,8 +68,9 @@ class DBHandler {
   public function createCategory ($name_category, $email_user) {
     $category= new Category($name_category, $email_user);
     $newId = $this->retrieveLastCategoryId() + 1;
-    $category->setId($newId);
     $this->categoriesDB->create($category);
+    $category->setId($newId);
+    return $category;
   }
 
   /**
@@ -81,8 +82,7 @@ class DBHandler {
    */
   public function createDefaultsCategories ($user) {
     $email = $user->getEmail();
-    $category1=new Category('Identité', $email);
-    $this->createCategory($category1, $user);
+    $category1 = $this->createCategory('Identité', $email);
     $this->createItem(new Item("Nom", $user->getLastName(), $category1->getId()));
     $this->createItem(new Item("Prénom", $user->getFirstName(), $category1->getId()));
     $this->createItem(new Item("Sexe", '', $category1->getId()));
@@ -90,8 +90,7 @@ class DBHandler {
     $this->createItem(new Item("Lieu de naissance", '',$category1->getId()));
     $this->createItem(new Item("Taille", '', $category1->getId()));
 
-    $category2 = new Category('Coordonnées', $email);
-    $this->createCategory($category2, $user);
+    $category2 = $this->createCategory('Coordonnées', $email);
     $this->createItem(new Item("Adresse", '', $category2->getId()));
     $this->createItem(new Item("Code postal", '', $category2->getId()));
     $this->createItem(new Item("Ville", '', $category2->getId()));

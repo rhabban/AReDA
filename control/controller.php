@@ -221,17 +221,29 @@ switch ($action) {
                         var_dump($_POST);
                         $data = $_POST;
                         $errors = array(); // A MODIFIER
+                        $list_item=array();
                         if (count($errors)==0) {
                             foreach ($data as $key => $value) {
                                 if ($key=="name_category") {
-                                    $name_category=$key;
+                                    $name_category=$value;
                                 } else {
-                                    split($key)
+                                    $id=explode('_',$key)[2];
+                                    $type=explode('_',$key)[0];
+                                    if($type=="name"){
+                                        $name=$value;
+                                    } elseif($type=="value"){
+                                        $list_item[$name]=$value;
+                                    }
                                 }
                             }
-                            //$dbHandler->createCategory($data,$user);
+                            $newCategory=$dbHandler->createCategory($name_category,$user->getEmail());
+                            echo('Category created : '.$name_category);
+                            foreach($list_item as $key => $value){
+                                $dbHandler->createItem(new Item($key,$value,$newCategory->getId()));    
+                                echo ('Item created : '. $key. '-'. $value);
+                            };
                             $_SESSION["feedback"] = "<div class='alert alert-info'>L'utilisateur a bien &eacute;t&eacute; ajout&eacute;</div>";
-                            //header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
+                            header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         } else { // count(errors) != 0
                             $_SESSION["feedback"] = "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span> Il y a des erreurs dans le formulaire !</div>";
                             header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
@@ -264,7 +276,6 @@ switch ($action) {
                             //here, for debug reason we just return dump of $_POST, you will see result in browser console
                             echo $value;
                             $dbHandler->updateItemValue($pk,$value);
-                            die();
                         } else {
                         /* 
                             In case of incorrect value or error you should return HTTP status != 200. 
