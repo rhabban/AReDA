@@ -20,10 +20,10 @@
   			//Edition Mode
   			if ($(this).hasClass("active") ){
   				$(this).removeClass("active");
-  				$(".value_item").editable('disable');
+  				$(".value_item").editable('destroy');
   			} else {
   				$(this).addClass("active");
-  				$(".value_item").editable('enable');
+  				$(".value_item").editable('activate');
   			}
   		});
 
@@ -40,6 +40,10 @@
   		$(function(){
         $('.value_item a').editable({
         });
+      });
+
+      $(".editable-disabled").click(function(event){
+        event.preventDefault();
       });
 
       var id_item = 0;

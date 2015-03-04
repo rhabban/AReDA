@@ -13,3 +13,20 @@ div.content{
 ul{
 	list-style-type: none;
 }
+
+.value_item,.value_item:hover{
+	cursor:default;
+	color:#585858;
+  text-decoration:none;
+}
+
+.editable-click{
+  text-decoration: none;
+  color: #428bca;
+  border-bottom: dashed 1px #0088cc;
+}
+
+.editable-empty{
+  font-style:italic;
+  color: #DD1144;
+}

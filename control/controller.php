@@ -252,9 +252,6 @@ switch ($action) {
 
                     case "saveEdition":  /*
                         Script for update record from X-editable.
-                        */
-                        //delay (for debug only)
-                        sleep(1); 
                         /*
                         You will get 'pk', 'name' and 'value' in $_POST array.
                         */

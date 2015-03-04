@@ -67,12 +67,12 @@ abstract class PrivateView extends View {
         foreach ($userCategories as $category){
 
             $this->content.="<div class='col-md-6'>";
-            $this->content.="<table class='table table-hover'>";
+            $this->content.="<table class='table table-hover table-striped'>";
             $this->content.="<thead><tr><th>".$category->getName()."</th><th></th></thead>";
             $this->content.="<tbody>";
             
             foreach($category->getItemsList() as $item){
-                $this->content.="<tr><td>" .$item->getName() ."</td><td><a href='#' name='".$item->getName()."'class='value_item' data-type='text' data-pk='" . $item->getId() . "' data-url='" . $this->urlBuilder->getSaveUserAdministrativeDataURL()[0] . "' >" . $item->getValue() . "</em></td></tr>";
+                $this->content.="<tr><td>" .$item->getName() ."</td><td><a href='#' name='".$item->getName()."'class='value_item editable-disabled' data-type='text' data-pk='" . $item->getId() . "' data-url='" . $this->urlBuilder->getSaveUserAdministrativeDataURL()[0] . "' >" . $item->getValue() . "</td></tr>";
             }
 
             $this->content.="</tbody>";
