@@ -114,12 +114,19 @@ class URLBuilder {
     }
 
     /**
-     * Returns the URL of the page allowing to save an elimination tournament.
-     * @param $newTournamentId The id of the tournament to save
+     * Returns the URL of the page allowing to save a new category.
      * @return an array
      */
-    public function getSaveCategoryCreationURL ($email="", $linkName = "Sauver") {
+    public function getSaveCategoryCreationURL ($linkName = "Sauver") {
         return array(".?action=formulaire&amp;p=saveCreation", $linkName);
+    }
+
+    /**
+     * Returns the URL of the page allowing to save an edited category.
+     * @return an array
+     */
+    public function getSaveCategoryEditionURL ($linkName = "Editer") {
+        return array(".?action=formulaire&amp;p=saveEdition", $linkName);
     }
 
     /**

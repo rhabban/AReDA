@@ -218,7 +218,6 @@ switch ($action) {
                         break;
 
                     case "saveCreation":
-                        var_dump($_POST);
                         $data = $_POST;
                         $errors = array(); // A MODIFIER
                         $list_item=array();
@@ -250,36 +249,38 @@ switch ($action) {
                         }
                         break;
 
-                    case "saveEdition":  /*
-                        Script for update record from X-editable.
-                        /*
-                        You will get 'pk', 'name' and 'value' in $_POST array.
-                        */
-                        $name = $_POST['name'];
-                        $pk = $_POST['pk'];
-                        $value = $_POST['value'];
-                        /*
-                        Check submitted value
-                        */
-                        if(!empty($value)) {
-                            /*
-                            If value is correct you process it (for example, save to db).
-                            In case of success your script should not return anything, standard HTTP response '200 OK' is enough.
+                    case "saveEdition":
+                        $data = $_POST;
+                        $errors = array(); // A MODIFIER
+                        if (count($errors)==0) {
+                            foreach ($data as $key => $value) {
+                                // AJAX Request
+                                if ($key=="category") {
+                                    $tmp = explode('_',$value); 
+                                    $name_category = $tmp[0];
+                                    $id_category = $tmp[3];
+                                    $dbHandler->updateCategoryName($id_category, $name_category,$user->getEmail());
+                                    echo json_encode(array("name_category" => $name_category));
+                                    exit();
+                                } else if($key=="item") {
+                                    $tmp = explode('_',$value);
+                                    $name_item=$tmp[0];
+                                    $id_item = $tmp[3];
+                                    $dbHandler->updateItemName($id_item,$name_item);
+                                    echo json_encode(array("name_item" => $name_item));
+                                    exit();
+                                } else {
+                                    $id_item=explode('_',$key)[3];
+                                    $type=explode('_',$key)[0];
+                                    $dbHandler->updateItemValue($id_item,$value);
 
-                            for example:
-                            $result = mysql_query('update users set '.mysql_escape_string($name).'="'.mysql_escape_string($value).'" where user_id = "'.mysql_escape_string($pk).'"');
-                            */
-
-                            //here, for debug reason we just return dump of $_POST, you will see result in browser console
-                            echo $value;
-                            $dbHandler->updateItemValue($pk,$value);
-                        } else {
-                        /* 
-                            In case of incorrect value or error you should return HTTP status != 200. 
-                            Response body will be shown as error message in editable form.
-                            */
-                            //header('HTTP 400 Bad Request', true, 400);
-                            echo "This field is required!";
+                                } 
+                            }
+                            $_SESSION["feedback"] = "<div class='alert alert-info'>La catégorie a bien &eacute;t&eacute; modifi&eacute;e</div>";
+                            header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
+                        } else { // count(errors) != 0
+                            $_SESSION["feedback"] = "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span> Il y a des erreurs dans le formulaire !</div>";
+                            header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         }
                         break;
 

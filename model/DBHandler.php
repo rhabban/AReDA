@@ -200,6 +200,10 @@ class DBHandler {
     $this->itemsDB->updateItem($item);
   }
 
+  public function updateItemName ($id_item, $name_item) {
+    $this->itemsDB->updateName($id_item, $name_item);
+  }
+
   public function updateItemValue ($id_item, $value_item) {
     $this->itemsDB->updateItemValue($id_item, $value_item);
   }
@@ -207,6 +211,11 @@ class DBHandler {
   public function updateCategory (Category $category) {
     $this->categoriesDB->updateCategory($category);
   }
+
+  public function updateCategoryName ($id_category, $name_category, $userEmail) {
+    $this->categoriesDB->updateName(new Category ($name_category, $userEmail, $id_category));
+  }
+
 
   public function updateUser (PersonRank $user) {
     $this->usersDB->change($user->getEmail(), $user);

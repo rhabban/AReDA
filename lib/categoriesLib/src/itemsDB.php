@@ -122,9 +122,9 @@ class ItemsDB {
 
   // Update methods =======================================================================
     
-  public function updateName (Item $item) {
-    $this->updateNameStatement->bindValue(":name_item",$item->getName());
-    $this->updateNameStatement->bindValue(":id_item",$item->getId());
+  public function updateName ($id_item, $name_item) {
+    $this->updateNameStatement->bindValue(":name_item",$name_item);
+    $this->updateNameStatement->bindValue(":id_item",$id_item);
     $this->updateNameStatement->execute();
   }
 

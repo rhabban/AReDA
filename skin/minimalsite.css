@@ -12,6 +12,7 @@ div.content{
 
 ul{
 	list-style-type: none;
+  padding:0px;
 }
 
 .value_item,.value_item:hover{
@@ -29,4 +30,9 @@ ul{
 .editable-empty{
   font-style:italic;
   color: #DD1144;
+}
+
+.name_category > .form-control{
+  width:auto;
+  display:inline-block;
 }
