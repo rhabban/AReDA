@@ -32,7 +32,6 @@ abstract class PrivateView extends View {
 			$this->content.= $this->makeUserAdministrativeDataMenu();
 			$this->content.="<h2>" . $this->title . "</h2>";
 			$this->content.="<div id='actions'>";
-			$this->content.="<a id='edit' class='btn btn-primary btn-lg' data-toggle='tooltip' title data-original-title='Editer' role='button'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
 			$this->content.="&nbsp;<span data-toggle='modal' data-target='#modalAddCategory' aria-hidden='true'>
 								<a id='addCategory' class='btn btn-success btn-lg' data-toggle='tooltip' title data-original-title='Ajouter une catégorie' role='button'>
 									<span class='glyphicon glyphicon-plus'></span>
@@ -78,15 +77,21 @@ abstract class PrivateView extends View {
 				foreach($category->getItemsList() as $item){
 					// List items by categories
 					$this->content.="<ul>";
-					$this->content.="<li><b>" .$item->getName() ."</b></li>";
-					$this->content.="<li><a href='#' name='" .$item->getName(). "'class='value_item'>" . $item->getValue() . "</a></li>";
+					$this->content.="<li class='id_item_" .$item->getId(). "'><b>" .$item->getName() ."</b>";
+					if ($item->getValue() == ''){
+						$this->content.="<p><i style='color:grey'> - Non renseigné - </i></p></li>";
+					} else {
+						$this->content.="<p><i style='color:grey'>" . $item->getValue() . "</i></p></li>";
+					}
 					$this->content.="</ul>";
 					// Pre-load modalContent per item
 					$modalContent.= '<div class="form-group">
 										<div>
-											<label for="id_item_' .$item->getId(). '">' .$item->getName().'</label><span>&nbsp;|&nbsp;<span id="id_item_' .$item->getId(). '" class="editName_item" data-url="' .$this->urlBuilder->getSaveCategoryEditionURL()[0]. '"><a>Modifier</a></span></span>
+											<label for="id_item_' .$item->getId(). '">' .$item->getName().'</label>
+											<span>&nbsp;|&nbsp;<span id="id_item_' .$item->getId(). '" class="editName_item" data-url="' .$this->urlBuilder->getSaveCategoryEditionURL()[0]. '"><a>Modifier</a></span></span>
 										</div>
 										<input type="text" class="form-control" name="value_id_item_' .$item->getId(). '" value="' .$item->getValue().'">
+										<span class ="delete_item" style="float:right"><a>Supprimer</a></span>
 									</div>';
 				}
 				$this->content.="</ul>";
@@ -108,7 +113,8 @@ abstract class PrivateView extends View {
 												<div class="modal-body">';
 					//Loading modalContent with all items								
 				$this->content.= $modalContent;
-				$this->content.=			'</div>
+				$this->content.=			'<a class="btn btn-success newItem" id="addItem">Ajouter un item</a>
+											</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 													<button type="submit" class="btn btn-primary">Enregistrer</button>

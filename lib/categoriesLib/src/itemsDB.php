@@ -60,6 +60,8 @@ class ItemsDB {
     $this->updateCategoryIdStatement=$this->pdo->prepare($query);
     $query="UPDATE `".$this->table."` SET name_item=:name_item, value_item=:value_item, id_category=:id_category WHERE id_item=:id_item";
     $this->updateItemStatement=$this->pdo->prepare($query);
+    $query="DELETE FROM `".$this->table."` WHERE id_item=:id_item";
+    $this->deleteItemStatement=$this->pdo->prepare($query);
   }
 
   // Create methods =======================================================================
@@ -155,6 +157,11 @@ class ItemsDB {
   }
 
   // Delete methods =======================================================================
+
+  public function deleteItem ($item_id) {
+    $this->deleteItemStatement->bindValue(":id_item",$item_id);
+    $this->deleteItemStatement->execute();
+  }
 
   /**
    * Drops the tables from the database. Nothing occurs for each table if it does not

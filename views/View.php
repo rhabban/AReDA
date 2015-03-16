@@ -146,8 +146,6 @@ class View {
     protected function getMenu () {
         return array(
                      $this->urlBuilder->getWelcomeURL(),
-                     $this->urlBuilder->getInformationURL('a', "information sur la lettre 'a'"),
-                     $this->urlBuilder->getInformationURL('b', "information sur la lettre 'b'")
                      );
     }
 

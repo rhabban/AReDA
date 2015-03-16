@@ -223,6 +223,10 @@ class DBHandler {
 
   // Delete methods ======================================================================
 
+  public function deleteItem ($item_id) {
+    $this->itemsDB->deleteItem($item_id);
+  }
+
   /**
    * Deletes all the tables used. For each table, nothing occurs if the table
    * already exists.

@@ -15,15 +15,6 @@ class URLBuilder {
     public function getWelcomeURL($linkName = "Accueil") {
         return array(".", $linkName);
     }
-
-    /**
-     * Returns the URL of the information page.
-     * @param $char The character about which to display information
-     * @return A string
-     */
-    public function getInformationURL ($char, $linkName = "Information") {
-        return array(".?action=information&char=$char", $linkName);
-    }
     
      /**
      * Returns the URL of the users page.
