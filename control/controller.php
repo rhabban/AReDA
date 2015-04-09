@@ -52,22 +52,13 @@ if ($action===null) {
     // Default action is "information" if some character is given, "welcome" otherwise
     $action = ($char===null)? "welcome": "information";
 }
+
 // Delivering requested page
 switch ($action) {
 
     case "welcome":
         $view->makeWelcomePage();
         break;
-
-    case "createAccount":
-        // Vérifier que l'adresse email n'est pas déjà existante en BDD
-        $data = $_POST;
-        $dbHandler->createUser(new PersonRank ($data['firstName'], $data['lastName'], $data['email'], 'utilisateur'), $data['password']);
-        // ENvoyer un mail de confirmation
-        $_SESSION["feedback"] = "<div class='alert alert-success'>Votre compte utilisateur a bien été crée !</div>";
-        header("Location:".htmlspecialchars_decode($urlBuilder->getWelcomeURL()[0]));
-        break;
-
         
 	case "utilisateurs":
         $accessRank = array("administrateur");
@@ -250,7 +241,7 @@ switch ($action) {
                                 $dbHandler->createItem(new Item($key,$value,$newCategory->getId()));    
                                 echo ('Item created : '. $key. '-'. $value);
                             };
-                            $_SESSION["feedback"] = "<div class='alert alert-info'>La catégorie " .$name_category. " a été ajoutée</div>";
+                            $_SESSION["feedback"] = "<div class='alert alert-info'>L'utilisateur a bien &eacute;t&eacute; ajout&eacute;</div>";
                             header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         } else { // count(errors) != 0
                             $_SESSION["feedback"] = "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span> Il y a des erreurs dans le formulaire !</div>";
@@ -285,26 +276,12 @@ switch ($action) {
 
                                 } 
                             }
-                            $_SESSION["feedback"] = "<div class='alert alert-info'>La catégorie " .$name_category. " a bien &eacute;t&eacute; modifi&eacute;e</div>";
+                            $_SESSION["feedback"] = "<div class='alert alert-info'>La catégorie a bien &eacute;t&eacute; modifi&eacute;e</div>";
                             header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         } else { // count(errors) != 0
                             $_SESSION["feedback"] = "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span> Il y a des erreurs dans le formulaire !</div>";
                             header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         }
-                        break;
-
-                    case "deleteItem":
-                        $data = $_POST;
-                        $errors = array(); // A MODIFIER
-                        if (count($errors)==0) {
-                            $id_item = intval($data['item']);
-                            $dbHandler->deleteItem($id_item);
-                            $return = 'Item deleted : ' . $id_item;
-                            echo json_encode($return);
-                        } else { // count(errors) != 0
-                            $_SESSION["feedback"] = "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span> Il y a des erreurs dans le formulaire !</div>";
-                        }
-                            header("Location: ".htmlspecialchars_decode($urlBuilder->getUserAdministrativeDataURL()[0]));
                         break;
 
                     default:

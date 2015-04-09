@@ -15,13 +15,10 @@
   <script type="text/javascript">
     $(function() {
       var itemList;
-      var categoryName;
-      var id_item_List = [];
-      var tmp_id_item = 0;
+      var categoryName
       $("#addItem").click(function(){
-        alert('hey');
-        tmp_id_item++;
-        $(this).parent().before("<li class='form-inline'><div class='form-group'><label>Nom de l'élément</label><input type='text' name='name_item_" + tmp_id_item +"' class='form-control col-xs-3 name_item' placeholder='Nom de l&apos;élément'></div><div class='form-group'><label>Valeur de l'élément</label><input type='text' name='value_item_" + id_item +"' class='form-control value_item' placeholder='Valeur de l&apos;élément'></div></li>");
+        id_item++;
+        $(this).parent().before("<li class='form-inline'><div class='form-group'><label>Nom de l'élément</label><input type='text' name='name_item_" + id_item +"' class='form-control col-xs-3 name_item' placeholder='Nom de l&apos;élément'></div><div class='form-group'><label>Valeur de l'élément</label><input type='text' name='value_item_" + id_item +"' class='form-control value_item' placeholder='Valeur de l&apos;élément'></div></li>");
       });
 
       $(".editName_category").click(function(){
@@ -50,83 +47,51 @@
       });
 
     $(".editName_item").click(function(){
-      var input_itemName = "<input type='text' class='form-control' style='width:auto' name='name_id_item' value='" +$(this).parent().parent().children('label').text()+ "'>";
-      var that = $(this).parent().parent();
-      $(this).parent().hide();
-      $(that).children('label').html(input_itemName);
-      $(that).children('label').children('input').focus();
-      $(that).children('label').children('input').blur(function(){
-        var id_item = $(that).children('label').attr('for');
-        var posting = $.ajax({
-          type: "POST",
-          url: "?action=formulaire&p=saveEdition",
-          data: "item=" + $(this).val() + "_" + id_item,
-          dataType: 'json',
-          success: function (data){
-            var newValue = $(that).children('label').children('input').val();
-            $(that).children('label').children('input').remove();
-            $(that).children().show();
-            $(that).children('label').html(newValue);
-            $(that).parent().parent().append('<div class="alert alert-success" role="alert">Le nom de la catégorie à été modifié</div>');
-            setTimeout(function(){
-              $('.alert').remove();
-            }, 2000);
-          }
+        var input_itemName = "<input type='text' class='form-control' style='width:auto' name='name_id_item' value='" +$(this).parent().parent().children('label').text()+ "'>";
+        var that = $(this).parent().parent();
+        $(this).parent().hide();
+        $(that).children('label').html(input_itemName);
+        $(that).children('label').children('input').focus();
+        $(that).children('label').children('input').blur(function(){
+            var item_id = $(that).children('label').attr('for');
+            var posting = $.ajax({
+                type: "POST",
+                url: "?action=formulaire&p=saveEdition",
+                data: "item=" + $(this).val() + "_" + item_id,
+                dataType: 'json',
+                success: function (data){
+                    var newValue = $(that).children('label').children('input').val();
+                    $(that).children('label').children('input').remove();
+                    $(that).children().show();
+                    $(that).children('label').html(newValue);
+                    $(that).parent().parent().append('<div class="alert alert-success" role="alert">Le nom de la catégorie à été modifié</div>');
+                    setTimeout(function(){
+                        $('.alert').remove();
+                    }, 2000);
+                }
+            });
         });
-      });
     });
         
 
-    $('.editModal').on('shown.bs.modal', function (e) {
-      itemList= [];
-      var toFind = $('input');
-      $(this).find(toFind).each(function(){
-        itemList.push($(this).val());
-      });
-    });
-
-    $('.editModal').on('hide.bs.modal', function (e) {
-      var i = 0;
-      var toFind = $('input');
-      $(this).find(toFind).each(function(){
-        $(this).val(itemList[i]);
-        i++;
-      });
-      for (var index= 0; index<id_item_List.length ; index++){
-        $('.id_item_'+id_item_List[index]).remove();        
-      }
-      id_item_List = [];
-    });
-
-    $('.delete_item').click(function(){
-      var item = $(this).parent().children('div').children('label');
-      if (confirm("Voulez vous supprimer l'item " +item.html()+" ?")){
-        var id_item = $(this).parent().find('input').attr('name');
-        id_item = id_item.split('_')
-        $(this).parent().parent().append('<div class="alert alert-success" role="alert">L\'item ' +item.html()+ ' a bien été supprimé !</div>');
-        var that = $(this).parent()
-        var posting = $.ajax({
-          type: "POST",
-          url: "?action=formulaire&p=deleteItem",
-          data: "item=" + id_item[3],
-          dataType: 'html',
-          success: function (data){
-            that.remove();
-            id_item_List.push(id_item[3]);
-            setTimeout(function(){
-              $('.alert').remove();
-            }, 2000);
-          }
+      $('.editModal').on('shown.bs.modal', function (e) {
+        itemList= [];
+        var toFind = $('input');
+        $(this).find(toFind).each(function(){
+          itemList.push($(this).val());
         });
-      }
-    });
+      });
 
-    $('.newItem').click(function(){
-      
-    });
+      $('.editModal').on('hide.bs.modal', function (e) {
+        var i = 0;
+        var toFind = $('input');
+        $(this).find(toFind).each(function(){
+          $(this).val(itemList[i]);
+          i++;
+        });
+      });
 
-
-    $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip();
   });
   </script> 
   <title>Site web minimal</title>
